@@ -1,0 +1,13 @@
+{
+  "name": "minixpress",
+  "version": "0.0.0",
+  "description": "exercicio nodejs",
+  "main": "app.coffee",
+  "author": "willgm",
+  "scripts": {
+      "start": "coffee app.coffee"
+  },
+  "devDependencies": {
+    "coffee-script": "^1.7.1"
+  }
+}
