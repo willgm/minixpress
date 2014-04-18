@@ -10,16 +10,17 @@ server = http.createServer (request, response) ->
         response.writeHead 200, 'Content-Type': 'image/x-icon'
         return response.end()
 
-    path = url.parse(request.url).pathname.substr 1
-    view = fs.readFileSync "./views/#{ path || 'index' }.html"
-    TypeController = require "./controllers/#{path.capitaliseFirst() || 'Home'}.coffee"
+    path = url.parse(request.url).pathname.substr(1).split '/'
+    view = fs.readFileSync "./views/#{ path[0] || 'index' }.html"
+    TypeController = require "./controllers/#{path[0].capitaliseFirst() || 'Home'}.coffee"
     controller = new TypeController
+    method = controller[path[1] || 'index']
 
     response.writeHeader 200, 'Content-Type': 'text/html'
-    unless controller and view
+    unless controller and view and method
         response.write "Page Not Found!"
     else
-        response.write view.toString().replace '{{body}}', controller.index()
+        response.write view.toString().replace '{{body}}', method()
     response.end()
 
 server.listen 3000, ->
