@@ -3,6 +3,7 @@ fs = require 'fs'
 url = require 'url'
 handlebars = require 'handlebars'
 pageNotFound = fs.readFileSync "./views/404.html"
+mainTemplate = fs.readFileSync "./views/main.html"
 
 String::capitaliseFirst = -> @charAt(0).toUpperCase() + @slice(1)
 
@@ -26,7 +27,9 @@ server = http.createServer (request, response) ->
 
         return response.end pageNotFound unless controller and controller[methodName]
 
-        response.end handlebars.compile(view.toString()) controller[methodName]()
+        template = handlebars.compile(view.toString()) controller[methodName]()
+
+        response.end handlebars.compile(mainTemplate.toString()) body: template
 
 server.listen 3000, ->
     console.log 'MiniXpress => localhost:8080'

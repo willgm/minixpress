@@ -3,10 +3,10 @@ Controller = require "./Controller"
 module.exports = class HomeController extends Controller
 
     index: ->
-        body: "it's me!"
+        comentario: "it's me!"
 
     atributos: ->
-        body: "eu sou:"
+        comentario: "eu sou:"
         list: [
             'rápido'
             'simples'
@@ -14,4 +14,4 @@ module.exports = class HomeController extends Controller
         ]
 
     teste: ->
-        body: @request.url.split('/teste')[1]
+        comentario: @request.url.split('/teste')[1]
