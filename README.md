@@ -1,3 +1,3 @@
-minixpress
+MiniXpress
 ==========
 Brincando de NodeJS
