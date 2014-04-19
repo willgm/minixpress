@@ -20,11 +20,9 @@ server = http.createServer (request, response) ->
     fs.readFile "./views/#{controllerName}/#{methodName}.html", (err, view) ->
         return response.end pageNotFound if err
 
-        try TypeController = require "./controllers/#{controllerName}.coffee"
-        catch then return response.end pageNotFound
-
-        controller = new TypeController
-        method = controller[methodName]
+        try
+            Controller = require "./controllers/#{controllerName}.coffee"
+            method = (new Controller)[methodName]
 
         return response.end pageNotFound unless method
 
