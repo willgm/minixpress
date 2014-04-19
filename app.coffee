@@ -12,10 +12,13 @@ server = http.createServer (request, response) ->
         return response.end()
 
     path = url.parse(request.url).pathname.substr(1).split '/'
-    view = fs.readFileSync "./views/#{ path[0] || 'index' }.html"
-    TypeController = require "./controllers/#{path[0].capitaliseFirst() || 'Home'}.coffee"
+    controllerName = path[0].capitaliseFirst() || 'Home'
+    methodName = path[1] || 'index'
+
+    view = fs.readFileSync "./views/#{controllerName}/#{methodName}.html"
+    TypeController = require "./controllers/#{controllerName}.coffee"
     controller = new TypeController
-    method = controller[path[1] || 'index']
+    method = controller[methodName]
 
     response.writeHeader 200, 'Content-Type': 'text/html'
     unless controller and view and method
