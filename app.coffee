@@ -2,6 +2,7 @@ http = require 'http'
 fs = require 'fs'
 url = require 'url'
 handlebars = require 'handlebars'
+pageNotFound = fs.readFileSync "./views/404.html"
 
 String::capitaliseFirst = -> @charAt(0).toUpperCase() + @slice(1)
 
@@ -11,21 +12,23 @@ server = http.createServer (request, response) ->
         response.writeHead 200, 'Content-Type': 'image/x-icon'
         return response.end()
 
+    response.writeHeader 200, 'Content-Type': 'text/html'
     path = url.parse(request.url).pathname.substr(1).split '/'
     controllerName = path[0].capitaliseFirst() || 'Home'
     methodName = path[1] || 'index'
 
-    view = fs.readFileSync "./views/#{controllerName}/#{methodName}.html"
-    TypeController = require "./controllers/#{controllerName}.coffee"
-    controller = new TypeController
-    method = controller[methodName]
+    fs.readFile "./views/#{controllerName}/#{methodName}.html", (err, view) ->
+        return response.end pageNotFound if err
 
-    response.writeHeader 200, 'Content-Type': 'text/html'
-    unless controller and view and method
-        response.write "Page Not Found!"
-    else
-        response.write handlebars.compile(view.toString())(method())
-    response.end()
+        try TypeController = require "./controllers/#{controllerName}.coffee"
+        catch then return response.end pageNotFound
+
+        controller = new TypeController
+        method = controller[methodName]
+
+        return response.end pageNotFound unless method
+
+        response.end handlebars.compile(view.toString())(method())
 
 server.listen 3000, ->
     console.log 'MiniXpress => localhost:8080'
