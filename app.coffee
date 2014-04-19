@@ -32,4 +32,4 @@ server = http.createServer (request, response) ->
         response.end handlebars.compile(mainTemplate.toString()) body: template
 
 server.listen 3000, ->
-    console.log 'MiniXpress => localhost:8080'
+    console.log 'MiniXpress => localhost:3000'
