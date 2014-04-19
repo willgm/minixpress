@@ -22,11 +22,11 @@ server = http.createServer (request, response) ->
 
         try
             Controller = require "./controllers/#{controllerName}.coffee"
-            method = (new Controller)[methodName]
+            controller = new Controller request, response
 
-        return response.end pageNotFound unless method
+        return response.end pageNotFound unless controller and controller[methodName]
 
-        response.end handlebars.compile(view.toString())(method())
+        response.end handlebars.compile(view.toString()) controller[methodName]()
 
 server.listen 3000, ->
     console.log 'MiniXpress => localhost:8080'

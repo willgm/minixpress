@@ -12,3 +12,6 @@ module.exports = class HomeController extends Controller
             'simples'
             'escalavel'
         ]
+
+    teste: ->
+        body: @request.url.split('/teste')[1]
