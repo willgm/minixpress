@@ -1,6 +1,7 @@
 http = require 'http'
 fs = require 'fs'
 url = require 'url'
+handlebars = require 'handlebars'
 
 String::capitaliseFirst = -> @charAt(0).toUpperCase() + @slice(1)
 
@@ -20,7 +21,7 @@ server = http.createServer (request, response) ->
     unless controller and view and method
         response.write "Page Not Found!"
     else
-        response.write view.toString().replace '{{body}}', method()
+        response.write handlebars.compile(view.toString())(method())
     response.end()
 
 server.listen 3000, ->

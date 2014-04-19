@@ -5,9 +5,10 @@
   "main": "app.coffee",
   "author": "willgm",
   "scripts": {
-      "start": "node app"
+    "start": "node app"
   },
-  "devDependencies": {
+  "dependencies": {
+    "handlebars": "^2.0.0-alpha.2",
     "coffee-script": "^1.7.1"
   }
 }
